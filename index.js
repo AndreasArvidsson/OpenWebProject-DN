@@ -119,6 +119,10 @@ function stringToRdns(dnString) {
     const res = [];
     for (let i = dnParts.length - 1; i > -1; --i) {
         const rdnParts = dnParts[i].match(RDN_REGEXP);
+        if (rdnParts.length !== 2) {
+            console.error("Malformed DN '" + dnString + "'");
+            return "";
+        }
         res.push(new RDN(
             rdnParts[0],
             rdnParts[1],
