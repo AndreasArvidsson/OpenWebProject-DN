@@ -1,6 +1,6 @@
 # OpenWebProject DN
 
-**Working with Distinguished Name(DN) strings**    
+**Working with Distinguished Name(DN) strings in JavaScript**    
 
 ## Installation
 `npm install owp.dn --save`
