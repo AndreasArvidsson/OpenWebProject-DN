@@ -30,6 +30,9 @@ assertEquals("getParents", "c=Sverige", parents[2].toString());
 const dn2 = dn.append("ou", " # , # + \" \\ < > ; u0x0Ah u0x0Di = / ");
 assertEquals("append", 5, dn2.length());
 
+const dn3 = dn.append("cn", "A, B, C");
+assertEquals("append escape", "cn=A\\, B\\, C", dn3.getLastRDN().toString());
+
 assertEquals("toString", dn.value, dn.toString());
 
 const dns = [
