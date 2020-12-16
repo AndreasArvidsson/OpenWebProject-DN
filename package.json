@@ -4,7 +4,7 @@
     "version": "1.1.0",
     "main": "index.js",
     "scripts": {
-        "start": "webpack-dev-server --config test/webpack.config.js --port 9090 --open"
+        "start": "webpack serve --config test/webpack.config.js --port 9090"
     },
     "keywords": [
         "dn",
@@ -26,7 +26,6 @@
     "devDependencies": {
         "webpack": "latest",
         "webpack-cli": "latest",
-        "webpack-dev-server": "latest",
         "html-webpack-plugin": "latest",
         "babel-loader": "latest",
         "@babel/core": "latest",
