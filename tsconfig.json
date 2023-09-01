@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+        "module": "ESNext",
+        "target": "ES6",
+        "lib": ["ESNext"],
+        "moduleResolution": "Node",
+        "rootDir": "src",
+        "outDir": "lib",
+        "declaration": true,
+        "noEmitOnError": true,
+        "strict": true,
+        "forceConsistentCasingInFileNames": true,
+        "allowSyntheticDefaultImports": true
+    },
+    "include": ["src"],
+    "exclude": ["src/test"]
+}

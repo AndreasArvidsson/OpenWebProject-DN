@@ -10,28 +10,30 @@ const DN_REGEXP = new RegExp(/(\\.|[^,])+/g);
 //Split on = but not \=
 const RDN_REGEXP = new RegExp(/(\\.|[^=])+/g);
 
-class DN {
+export { RDN };
 
-    constructor(value) {
+export default class DN {
+    readonly value: string;
+    readonly rdns: RDN[];
+
+    constructor(value?: string | RDN[]) {
         if (typeof value === "string") {
             this.value = value;
             this.rdns = stringToRdns(value);
-        }
-        else if (Array.isArray(value)) {
+        } else if (Array.isArray(value)) {
             this.value = rdnsToString(value);
             this.rdns = value;
-        }
-        else {
+        } else {
             this.value = "";
             this.rdns = [];
         }
     }
 
-    length() {
+    length(): number {
         return this.rdns.length;
     }
 
-    equals(o) {
+    equals(o: unknown): boolean {
         if (o instanceof DN) {
             return o.value === this.value;
         }
@@ -41,99 +43,98 @@ class DN {
         return false;
     }
 
-    getRDN(index) {
+    getRDN(index: number): RDN | undefined {
         return this.rdns[index];
     }
 
-    getLastRDN() {
+    getLastRDN(): RDN {
         return this.rdns[this.rdns.length - 1];
     }
 
-    getLastValue() {
+    getLastValue(): string {
         return this.getLastRDN().value;
     }
 
-    getFirstRDN(attribute) {
-        for (let rdn of this.rdns) {
-            if (rdn.attribute === attribute) {
-                return rdn;
-            }
-        }
-        return null;
+    getFirstRDN(attribute: string): RDN | undefined {
+        return this.rdns.find((rdn) => rdn.attribute === attribute);
     }
 
-    getFirstIndex(attribute) {
-        for (let i = 0; i < this.rdns.length; ++i) {
-            if (this.rdns[i].attribute == attribute) {
-                return i;
-            }
-        }
-        return -1;
+    getFirstIndex(attribute: string): number {
+        return this.rdns.findIndex((rdn) => rdn.attribute === attribute);
     }
 
-    getParent() {
+    getParent(): DN | undefined {
         if (this.length() < 2) {
-            return null;
+            return undefined;
         }
         return this.subDn(this.length() - 1);
     }
 
-    getParents() {
-        const res = [];
+    getParents(): DN[] {
+        const res: DN[] = [];
         for (let i = this.length() - 1; i > 0; --i) {
             res.push(this.subDn(i));
         }
         return res;
     }
 
-    append(attribute, value) {
+    append(attribute: string, value: string): DN {
         return new DN([...this.rdns, new RDN(attribute, value)]);
     }
 
-    subDn(length) {
+    subDn(length: number): DN {
         return new DN(this.rdns.slice(0, length));
     }
 
-    toString() {
+    toString(): string {
         return this.value;
     }
 
-    compareTo(dn) {
+    compareTo(dn: DN): number {
         const size = Math.min(this.length(), dn.length());
         for (let i = 0; i < size; ++i) {
             const compare = this.rdns[i].compareTo(dn.rdns[i]);
-            if (compare > 0) { return 1; }
-            if (compare < 0) { return -1; }
+            if (compare > 0) {
+                return 1;
+            }
+            if (compare < 0) {
+                return -1;
+            }
         }
-        if (this.length() > dn.length()) { return 1; }
-        if (this.length() < dn.length()) { return -1; }
+        if (this.length() > dn.length()) {
+            return 1;
+        }
+        if (this.length() < dn.length()) {
+            return -1;
+        }
         return 0;
     }
-
 }
-export default DN;
-export { RDN };
 
-function stringToRdns(dnString) {
+function stringToRdns(dnString: string): RDN[] {
     const dnParts = dnString.match(DN_REGEXP);
-    const res = [];
+
+    if (dnParts == null) {
+        console.error(`Malformed DN '${dnString}'`);
+        return [];
+    }
+
+    const res: RDN[] = [];
+
     for (let i = dnParts.length - 1; i > -1; --i) {
         const rdnParts = dnParts[i].match(RDN_REGEXP);
-        if (rdnParts.length !== 2) {
-            console.error("Malformed DN '" + dnString + "'");
-            return "";
+        if (rdnParts?.length !== 2) {
+            console.error(`Malformed DN '${dnString}'`);
+            return [];
         }
-        res.push(new RDN(
-            rdnParts[0],
-            rdnParts[1],
-            true
-        ));
+        res.push(new RDN(rdnParts[0], rdnParts[1], true));
     }
+
     return res;
 }
 
-function rdnsToString(rdns) {
-    const parts = [];
+function rdnsToString(rdns: RDN[]): string {
+    const parts: string[] = [];
     for (let i = rdns.length - 1; i > -1; --i) {
         parts.push(rdns[i].toString());
     }

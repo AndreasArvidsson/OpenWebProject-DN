@@ -1,10 +1,15 @@
 {
     "name": "owp.dn",
     "description": "Working with Distinguished Name(DN) strings",
-    "version": "1.1.0",
-    "main": "index.js",
+    "version": "1.2.0",
+    "main": "lib/index.js",
+    "types": "lib/index.d.ts",
+    "files": [
+        "lib/*"
+    ],
     "scripts": {
-        "start": "webpack serve --config test/webpack.config.js --port 9090"
+        "build": "tsc -p .",
+        "test": "tsx src/test/runTests.ts"
     },
     "keywords": [
         "dn",
@@ -24,13 +29,11 @@
         "url": "https://github.com/AndreasArvidsson/OpenWebProject-DN/issues"
     },
     "devDependencies": {
-        "webpack": "latest",
-        "webpack-cli": "latest",
-        "html-webpack-plugin": "latest",
-        "babel-loader": "latest",
-        "@babel/core": "latest",
-        "eslint-loader": "latest",
-        "eslint": "latest",
-        "babel-eslint": "latest"
+        "@types/mocha": "10.0.1",
+        "@types/node": "18.15.11",
+        "glob": "10.0.0",
+        "mocha": "10.2.0",
+        "tsx": "3.12.6",
+        "typescript": "^5.2.2"
     }
 }
