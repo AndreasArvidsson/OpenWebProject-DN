@@ -9,6 +9,9 @@ describe("DN", () => {
     const assertEquals = (title: string, expected: unknown, actual: unknown) =>
         it(title, () => assert.equal(actual, expected));
 
+    const assertThrows = (title: string, fn: () => void) =>
+        it(title, () => assert.throws(fn));
+
     assertEquals("length", 4, dn.length());
 
     assertEquals("equals", true, dn.equals(new DN(dnString)));
@@ -97,4 +100,8 @@ describe("DN", () => {
             );
         });
     });
+
+    assertThrows("Throws: empty", () => new DN(""));
+    assertThrows("Throws: missing prefix", () => new DN("Sverige"));
+    assertThrows("Throws: missing value", () => new DN("c="));
 });

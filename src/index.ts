@@ -115,8 +115,7 @@ function stringToRdns(dnString: string): RDN[] {
     const dnParts = dnString.match(DN_REGEXP);
 
     if (dnParts == null) {
-        console.error(`Malformed DN '${dnString}'`);
-        return [];
+        throw Error(`Malformed DN '${dnString}'`);
     }
 
     const res: RDN[] = [];
@@ -124,8 +123,7 @@ function stringToRdns(dnString: string): RDN[] {
     for (let i = dnParts.length - 1; i > -1; --i) {
         const rdnParts = dnParts[i].match(RDN_REGEXP);
         if (rdnParts?.length !== 2) {
-            console.error(`Malformed DN '${dnString}'`);
-            return [];
+            throw Error(`Malformed DN '${dnString}'`);
         }
         res.push(new RDN(rdnParts[0], rdnParts[1], true));
     }

@@ -22,7 +22,7 @@ Represents the entire DN string.
 ```javascript
 const dn = new DN("cn=Andreas,o=Repill Linpro,c=Sweden");
 dn.value -> "cn=Andreas,o=Repill Linpro,c=Sweden"
-dn.rdns -> [ RDN("c=Sweden"), RDN("o=Repill Linpro"), RDN("cn=Andreas") ]  
+dn.rdns -> [ RDN("c=Sweden"), RDN("o=Repill Linpro"), RDN("cn=Andreas") ]
 ```
 
 ### RDN Class
